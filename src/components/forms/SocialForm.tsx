@@ -8,7 +8,7 @@ interface SocialFormProps {
 const SocialForm = ({ isSignIn }: SocialFormProps) => {
     return (
         <>
-            <div className="mt-2 flex items-center justify-between">
+            <div className="mt-5 flex items-center justify-between">
                 <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
                 <span className="text-xs uppercase text-gray-500 dark:text-gray-400">
                     {isSignIn ? "or sign in with" : "or sign up with"}

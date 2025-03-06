@@ -1,93 +1,118 @@
-import React from "react";
+"use client";
 
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import {
+    DefaultValues,
+    FieldValues,
+    Path,
+    SubmitHandler,
+    useForm,
+} from "react-hook-form";
+import { z, ZodType } from "zod";
 
-interface AuthFormProps {
-    isSignIn: boolean;
+import { Button } from "@/components/ui/button";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+
+interface AuthFormProps<T extends FieldValues> {
+    formType: "SIGN_IN" | "SIGN_UP";
+    schema: ZodType<T>;
+    defaultValues: T;
+    onSubmit: (data: T) => Promise<{ success: boolean }>;
 }
 
-const AuthForm = ({ isSignIn }: AuthFormProps) => {
+const AuthForm = <T extends FieldValues>({
+    formType,
+    schema,
+    defaultValues,
+}: AuthFormProps<T>) => {
+    const form = useForm<z.infer<typeof schema>>({
+        resolver: zodResolver(schema),
+        defaultValues: defaultValues as DefaultValues<T>,
+    });
+
+    const greetingText =
+        formType === "SIGN_IN" ? "Welcome Back! 👋" : "Create an Account 🚀";
+    const buttonText = formType === "SIGN_IN" ? "Sign In" : "Sign Up";
+
+    const handleSubmit: SubmitHandler<T> = async () => {};
+
     return (
-        <>
-            <div className="font-display flex items-center justify-center space-x-5 text-2xl font-semibold text-gray-800">
-                {isSignIn ? "Welcome Back! 👋" : "Create an Account 🚀"}
-            </div>
-            <div className="mt-5">
-                {!isSignIn ? (
-                    <>
-                        <Label
-                            className="block pb-1 text-sm font-semibold text-gray-600"
-                            htmlFor="name"
-                        >
-                            Name
-                        </Label>
-                        <Input
-                            className="no-focus mb-5 mt-1 w-full rounded-lg border px-3 py-2 text-sm"
-                            id="name"
-                            type="text"
-                        />
-                    </>
-                ) : null}
-                <Label
-                    className="block pb-1 text-sm font-semibold text-gray-600"
-                    htmlFor="email"
-                >
-                    Email Address
-                </Label>
-                <Input
-                    className="no-focus mb-5 mt-1 w-full rounded-lg border px-3 py-2 text-sm"
-                    id="email"
-                    type="email"
-                />
-                <Label
-                    className="block pb-1 text-sm font-semibold text-gray-600"
-                    htmlFor="password"
-                >
-                    Password
-                </Label>
-                <Input
-                    className="no-focus mb-5 mt-1 w-full rounded-lg border px-3 py-2 text-sm"
-                    id="password"
-                    type="password"
-                />
-                {!isSignIn ? (
-                    <>
-                        <Label
-                            className="block pb-1 text-sm font-semibold text-gray-600"
-                            htmlFor="confirmPassword"
-                        >
-                            Confirm Password
-                        </Label>
-                        <Input
-                            className="no-focus mt-1 w-full rounded-lg border px-3 py-2 text-sm"
-                            id="confirmPassword"
-                            type="password"
-                        />
-                    </>
-                ) : null}
-            </div>
-            {isSignIn ? (
-                <div className="text-right">
-                    <Link
-                        className="font-display cursor-pointer text-xs font-semibold text-gray-500 hover:text-gray-600"
-                        href="#"
-                    >
-                        Forgot Password?
-                    </Link>
+        <Form {...form}>
+            <form
+                onSubmit={form.handleSubmit(handleSubmit)}
+                className="space-y-6"
+            >
+                <div className="font-display flex items-center justify-center space-x-5 text-2xl font-semibold text-gray-800">
+                    {greetingText}
                 </div>
-            ) : null}
-            <div className="mt-5 mb-5">
-                <Button
-                    className="w-full rounded-lg bg-red-600 px-4 py-2 text-center text-base font-semibold text-white shadow-md transition duration-200 ease-in hover:bg-red-700 custom-focus"
-                    type="submit"
-                >
-                    {isSignIn ? "Sign In" : "Sign Up"}
-                </Button>
-            </div>
-        </>
+
+                {Object.keys(defaultValues).map((field) => (
+                    <FormField
+                        key={field}
+                        control={form.control}
+                        name={field as Path<T>}
+                        render={({ field }) => (
+                            <FormItem className="flex w-full flex-col">
+                                <FormLabel className="block pb-1 text-sm font-semibold text-gray-600">
+                                    {field.name === "email"
+                                        ? "Email Address"
+                                        : field.name === "password2"
+                                        ? "Confirm Password"
+                                        : field.name.charAt(0).toUpperCase() +
+                                          field.name.slice(1)}
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        required
+                                        type={
+                                            field.name === "password"
+                                                ? "password"
+                                                : "text"
+                                        }
+                                        {...field}
+                                        className="no-focus mb-5 mt-1 w-full rounded-lg border px-3 py-2 text-sm"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                ))}
+
+                {formType === "SIGN_IN" ? (
+                    <div className="text-right">
+                        <Link
+                            className="font-display cursor-pointer text-xs font-semibold text-gray-500 hover:text-gray-600"
+                            href="#"
+                        >
+                            Forgot Password?
+                        </Link>
+                    </div>
+                ) : null}
+                <div className="my-5">
+                    <Button
+                        disabled={form.formState.isSubmitting}
+                        className="custom-focus w-full rounded-lg bg-red-600 px-4 py-2 text-center text-base font-semibold text-white shadow-md transition duration-200 ease-in hover:bg-red-700"
+                        type="submit"
+                    >
+                        {form.formState.isSubmitting
+                            ? buttonText === "Sign In"
+                                ? "Signing In..."
+                                : "Signing Up..."
+                            : buttonText}
+                    </Button>
+                </div>
+            </form>
+        </Form>
     );
 };
 

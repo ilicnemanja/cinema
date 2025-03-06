@@ -1,15 +1,28 @@
+"use client";
+
+import Link from "next/link";
 import React from "react";
 
 import AuthForm from "@/components/forms/AuthForm";
 import SocialForm from "@/components/forms/SocialForm";
-import Link from "next/link";
+import { SignUpSchema } from "@/lib/validations";
 
 const SignUp = () => {
     return (
         <>
-            <AuthForm isSignIn={false} />
+            <AuthForm
+                formType="SIGN_UP"
+                schema={SignUpSchema}
+                defaultValues={{
+                    name: "",
+                    email: "",
+                    password: "",
+                    password2: "",
+                }}
+                onSubmit={(data) => Promise.resolve({ success: true, data })}
+            />
             <SocialForm isSignIn={false} />
-            <span className="mt-8 flex justify-center items-center text-base gap-1">
+            <span className="mt-8 flex items-center justify-center gap-1 text-base">
                 Already on CinemaBuzz?{" "}
                 <Link
                     className="font-display cursor-pointer text-base font-semibold text-red-500 hover:text-red-600"
