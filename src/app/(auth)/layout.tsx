@@ -1,4 +1,13 @@
+import { Metadata } from "next";
 import React, { ReactNode } from "react";
+
+export const metadata: Metadata = {
+    title: "CinemaBuzz | Authentication",
+    description:
+        "Sign in to CinemaBuzz to book movie tickets, manage reservations, and enjoy exclusive rewards.",
+    keywords:
+        "CinemaBuzz login, movie tickets account, sign in, register, online reservations",
+};
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {
     return (
