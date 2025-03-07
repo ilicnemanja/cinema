@@ -2,6 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import {
     DefaultValues,
     FieldValues,
@@ -21,19 +23,29 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import ROUTES from "@/constants/routes";
 
 interface AuthFormProps<T extends FieldValues> {
     formType: "SIGN_IN" | "SIGN_UP";
     schema: ZodType<T>;
     defaultValues: T;
-    onSubmit: (data: T) => Promise<{ success: boolean }>;
+    onSubmit: (data: T) => Promise<{
+        accessToken?: string;
+        error?: string;
+        status: number;
+        success: boolean;
+    }>;
 }
 
 const AuthForm = <T extends FieldValues>({
     formType,
     schema,
     defaultValues,
+    onSubmit,
 }: AuthFormProps<T>) => {
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const router = useRouter();
+
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
         defaultValues: defaultValues as DefaultValues<T>,
@@ -43,7 +55,17 @@ const AuthForm = <T extends FieldValues>({
         formType === "SIGN_IN" ? "Welcome Back! 👋" : "Create an Account 🚀";
     const buttonText = formType === "SIGN_IN" ? "Sign In" : "Sign Up";
 
-    const handleSubmit: SubmitHandler<T> = async () => {};
+    const handleSubmit: SubmitHandler<T> = async (data) => {
+        const result = await onSubmit(data);
+
+        if (result?.accessToken) {
+            router.push(ROUTES.HOME);
+        } else if (result.success) {
+            router.push(ROUTES.SIGN_IN);
+        } else {
+            setErrorMessage(result?.error ?? null);
+        }
+    };
 
     return (
         <Form {...form}>
@@ -54,6 +76,12 @@ const AuthForm = <T extends FieldValues>({
                 <div className="font-display flex items-center justify-center space-x-5 text-2xl font-semibold text-gray-800">
                     {greetingText}
                 </div>
+
+                {errorMessage ? (
+                    <p className="paragraph-regular mt-2 flex justify-center">
+                        {errorMessage}
+                    </p>
+                ) : null}
 
                 {Object.keys(defaultValues).map((field) => (
                     <FormField
@@ -74,7 +102,8 @@ const AuthForm = <T extends FieldValues>({
                                     <Input
                                         required
                                         type={
-                                            field.name === "password"
+                                            field.name === "password" ||
+                                            field.name === "password2"
                                                 ? "password"
                                                 : "text"
                                         }

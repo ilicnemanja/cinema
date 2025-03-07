@@ -1,8 +1,18 @@
+import { redirect } from "next/navigation";
 import React, { ReactNode } from "react";
 
-const RootLayout = ({ children }: { children: ReactNode }) => {
+import ROUTES from "@/constants/routes";
+import { getSession } from "@/lib/session";
+
+const RootLayout = async ({ children }: { children: ReactNode }) => {
+    const session = await getSession();
+
+    if (!session) {
+        redirect(ROUTES.SIGN_IN);
+    }
+
     return (
-        <div className="bg-gray-50 h-screen">
+        <div className="h-screen bg-gray-50">
             RootLayout
             {children}
         </div>
