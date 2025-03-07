@@ -8,7 +8,7 @@ export const signInSchema = z.object({
     password: z
         .string()
         .min(6, { message: "Password must be at least 6 characters long." })
-        .max(100, { message: "Password cannot exceed 100 characters." }),
+        .max(50, { message: "Password cannot exceed 50 characters." }),
 });
 
 export const SignUpSchema = z
@@ -29,7 +29,7 @@ export const SignUpSchema = z
         password: z
             .string()
             .min(6, { message: "Password must be at least 6 characters long." })
-            .max(100, { message: "Password cannot exceed 100 characters." })
+            .max(50, { message: "Password cannot exceed 50 characters." })
             .regex(/[A-Z]/, {
                 message: "Password must contain at least one uppercase letter.",
             })

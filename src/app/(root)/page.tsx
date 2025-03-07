@@ -1,3 +1,3 @@
-export default function Home() {
-    return <div className="text-2xl">Root Home</div>;
+export default async function Home() {
+    return <div className="text-2xl">Home page</div>;
 }
