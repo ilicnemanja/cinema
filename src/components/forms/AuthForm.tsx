@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import ROUTES from "@/constants/routes";
+
 import CaptchaButton from "../dialog/CaptchaButton";
 
 interface AuthFormProps<T extends FieldValues> {

@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
@@ -5,7 +6,6 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 
 interface CaptchaButtonProps {
     isCaptchaDialogVisible: boolean;
@@ -38,7 +38,7 @@ const CaptchaButton = ({
                     }}
                     className="custom-focus w-full rounded-lg bg-red-600 px-4 py-2 text-center text-base font-semibold text-white shadow-md transition duration-200 ease-in hover:bg-red-700"
                 >
-                    I'm not a robot
+                    I&apos;m not a robot
                 </Button>
             </DialogContent>
         </Dialog>
