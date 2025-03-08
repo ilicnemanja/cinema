@@ -30,6 +30,7 @@ const CaptchaButton = ({
                 <DialogDescription>
                     Please complete the captcha to proceed.
                 </DialogDescription>
+                {/* TODO: Implement Cloudflare Turnstile Captcha */}
                 <Button
                     onClick={() => {
                         setIsCaptchaSolved(true);
