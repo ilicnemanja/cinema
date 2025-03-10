@@ -1,5 +1,3 @@
-import TurnstileWidget from "../widget/TurnstileWidget";
-
 import {
     Dialog,
     DialogContent,
@@ -7,6 +5,8 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+
+import TurnstileWidget from "../widget/TurnstileWidget";
 
 interface CaptchaButtonProps {
     isCaptchaDialogVisible: boolean;
