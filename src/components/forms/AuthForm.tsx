@@ -13,8 +13,6 @@ import {
 } from "react-hook-form";
 import { z, ZodType } from "zod";
 
-import CaptchaButton from "../dialog/CaptchaButton";
-
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -26,6 +24,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import ROUTES from "@/constants/routes";
+
+import CaptchaButton from "../dialog/CaptchaButton";
 
 interface AuthFormProps<T extends FieldValues> {
     formType: "SIGN_IN" | "SIGN_UP";
