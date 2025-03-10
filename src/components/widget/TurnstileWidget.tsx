@@ -12,9 +12,11 @@ export default function TurnstileWidget({
     handleSetToken,
 }: TurnstileWidgetProps) {
     const siteKey =
-        process.env.ENV === "production"
+        process.env.NEXT_PUBLIC_ENV === "production"
             ? process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
             : process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY_DEV;
+
+    console.log("siteKey: ", siteKey);
 
     return (
         <Turnstile
