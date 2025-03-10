@@ -11,6 +11,7 @@ import {
     SubmitHandler,
     useForm,
 } from "react-hook-form";
+import { useTurnstile } from "react-turnstile";
 import { z, ZodType } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -52,6 +53,7 @@ const AuthForm = <T extends FieldValues>({
     const [isCaptchaDialogVisible, setIsCaptchaDialogVisible] = useState(false);
     const [isCaptchaSolved, setIsCaptchaSolved] = useState(false);
     const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+    const turnstile = useTurnstile();
     const router = useRouter();
 
     const form = useForm<z.infer<typeof schema>>({
@@ -76,6 +78,7 @@ const AuthForm = <T extends FieldValues>({
             router.push(ROUTES.SIGN_IN);
         } else {
             setErrorMessage(result?.error ?? null);
+            turnstile.refresh();
         }
     };
 
