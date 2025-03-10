@@ -16,8 +16,6 @@ export default function TurnstileWidget({
             ? process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
             : process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY_DEV;
 
-    console.log("siteKey: ", siteKey);
-
     return (
         <Turnstile
             sitekey={siteKey!}
