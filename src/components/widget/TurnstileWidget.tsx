@@ -24,6 +24,9 @@ export default function TurnstileWidget({
                 handleIsCaptchaSolved(true);
                 handleIsCaptchaDialogVisible(false);
             }}
+            onExpire={() => {
+                handleIsCaptchaSolved(false);
+            }}
             refreshExpired="auto"
             theme="light"
         />
