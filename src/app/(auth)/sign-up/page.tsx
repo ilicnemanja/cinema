@@ -22,7 +22,8 @@ interface SignUpRequestData {
 
 const SignUp = () => {
     const onSubmit = async (
-        data: SignUpRequestData
+        data: SignUpRequestData,
+        captchaToken: string
     ): Promise<SignUpResponse> => {
         const { name, email, password } = data;
 
@@ -30,7 +31,12 @@ const SignUp = () => {
             const response = await fetch(`${ENDPOINTS.AUTH.SIGN_UP}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password, name }),
+                body: JSON.stringify({
+                    email,
+                    password,
+                    name,
+                    captcha: captchaToken,
+                }),
             }).then((res) => res.json() as Promise<SignUpResponse>);
 
             if (response.error) {

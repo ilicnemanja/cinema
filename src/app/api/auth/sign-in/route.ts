@@ -5,7 +5,7 @@ import { createSession } from "@/lib/session";
 
 export async function POST(req: Request) {
     try {
-        const { email, password } = await req.json();
+        const { email, password, captcha } = await req.json();
 
         const response = await fetch(
             `${CONFIGURATIONS.BACKEND_URL}/api/auth/login`,
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ email, password, captcha }),
             }
         );
 

@@ -31,7 +31,10 @@ interface AuthFormProps<T extends FieldValues> {
     formType: "SIGN_IN" | "SIGN_UP";
     schema: ZodType<T>;
     defaultValues: T;
-    onSubmit: (data: T) => Promise<{
+    onSubmit: (
+        data: T,
+        captchaToken: string
+    ) => Promise<{
         accessToken?: string;
         error?: string;
         status: number;
@@ -48,6 +51,7 @@ const AuthForm = <T extends FieldValues>({
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isCaptchaDialogVisible, setIsCaptchaDialogVisible] = useState(false);
     const [isCaptchaSolved, setIsCaptchaSolved] = useState(false);
+    const [captchaToken, setCaptchaToken] = useState<string | null>(null);
     const router = useRouter();
 
     const form = useForm<z.infer<typeof schema>>({
@@ -65,7 +69,7 @@ const AuthForm = <T extends FieldValues>({
             return;
         }
 
-        const result = await onSubmit(data);
+        const result = await onSubmit(data, captchaToken!);
         if (result?.accessToken) {
             router.push(ROUTES.HOME);
         } else if (result.success) {
@@ -158,6 +162,7 @@ const AuthForm = <T extends FieldValues>({
                 isCaptchaDialogVisible={isCaptchaDialogVisible}
                 setIsCaptchaDialogVisible={setIsCaptchaDialogVisible}
                 setIsCaptchaSolved={setIsCaptchaSolved}
+                setToken={(token) => setCaptchaToken(token)}
             />
         </>
     );
