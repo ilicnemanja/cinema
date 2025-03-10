@@ -1,7 +1,5 @@
 import Turnstile from "react-turnstile";
 
-import CONFIGURATIONS from "@/constants/configurations";
-
 interface TurnstileWidgetProps {
     handleIsCaptchaSolved: (value: boolean) => void;
     handleIsCaptchaDialogVisible: (value: boolean) => void;
@@ -14,7 +12,7 @@ export default function TurnstileWidget({
     handleSetToken,
 }: TurnstileWidgetProps) {
     const siteKey =
-        CONFIGURATIONS.ENV === "production"
+        process.env.ENV === "production"
             ? process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
             : process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY_DEV;
 
