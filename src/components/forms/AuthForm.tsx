@@ -76,6 +76,9 @@ const AuthForm = <T extends FieldValues>({
             router.push(ROUTES.SIGN_IN);
         } else {
             setErrorMessage(result?.error ?? null);
+            router.push(
+                formType === "SIGN_IN" ? ROUTES.SIGN_IN : ROUTES.SIGN_UP
+            );
         }
     };
 
