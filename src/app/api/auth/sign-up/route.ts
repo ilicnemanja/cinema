@@ -4,7 +4,7 @@ import CONFIGURATIONS from "@/constants/configurations";
 
 export async function POST(req: Request) {
     try {
-        const { name, email, password } = await req.json();
+        const { name, email, password, captcha } = await req.json();
 
         const response = await fetch(
             `${CONFIGURATIONS.BACKEND_URL}/api/auth/register`,
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ email, password, name }),
+                body: JSON.stringify({ email, password, name, captcha }),
             }
         );
 

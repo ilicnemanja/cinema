@@ -27,7 +27,8 @@ interface SignInRequestData {
 
 const SignIn = () => {
     const onSubmit = async (
-        data: SignInRequestData
+        data: SignInRequestData,
+        captchaToken: string
     ): Promise<SignInResponse> => {
         const { email, password } = data;
 
@@ -35,7 +36,11 @@ const SignIn = () => {
             const response = await fetch(`${ENDPOINTS.AUTH.SIGN_IN}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({
+                    email,
+                    password,
+                    captcha: captchaToken,
+                }),
             }).then((res) => res.json() as Promise<SignInResponse>);
 
             if (response.error) {
