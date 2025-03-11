@@ -76,6 +76,10 @@ const AuthForm = <T extends FieldValues>({
             router.push(ROUTES.SIGN_IN);
         } else {
             setErrorMessage(result?.error ?? null);
+
+            // Reset captcha and request a new solution
+            setIsCaptchaSolved(false);
+            setCaptchaToken(null);
         }
     };
 
